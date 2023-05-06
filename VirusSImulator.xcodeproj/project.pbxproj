@@ -12,6 +12,8 @@
 		201205B42A060204001D89BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201205B32A060204001D89BE /* ViewController.swift */; };
 		201205B92A060204001D89BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 201205B82A060204001D89BE /* Assets.xcassets */; };
 		201205BC2A060204001D89BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 201205BA2A060204001D89BE /* LaunchScreen.storyboard */; };
+		201205C92A06079B001D89BE /* SimulatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201205C82A06079B001D89BE /* SimulatorManager.swift */; };
+		201205CB2A06A354001D89BE /* HumanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201205CA2A06A354001D89BE /* HumanModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		201205B82A060204001D89BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		201205BB2A060204001D89BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		201205BD2A060204001D89BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		201205C82A06079B001D89BE /* SimulatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorManager.swift; sourceTree = "<group>"; };
+		201205CA2A06A354001D89BE /* HumanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +58,56 @@
 		201205AE2A060204001D89BE /* VirusSImulator */ = {
 			isa = PBXGroup;
 			children = (
-				201205AF2A060204001D89BE /* AppDelegate.swift */,
-				201205B12A060204001D89BE /* SceneDelegate.swift */,
-				201205B32A060204001D89BE /* ViewController.swift */,
-				201205B82A060204001D89BE /* Assets.xcassets */,
-				201205BA2A060204001D89BE /* LaunchScreen.storyboard */,
-				201205BD2A060204001D89BE /* Info.plist */,
+				201205C52A06064E001D89BE /* Sources */,
+				201205C42A06063F001D89BE /* Resources */,
 			);
 			path = VirusSImulator;
+			sourceTree = "<group>";
+		};
+		201205C32A060637001D89BE /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				201205CA2A06A354001D89BE /* HumanModel.swift */,
+				201205C82A06079B001D89BE /* SimulatorManager.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		201205C42A06063F001D89BE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				201205BD2A060204001D89BE /* Info.plist */,
+				201205B82A060204001D89BE /* Assets.xcassets */,
+				201205BA2A060204001D89BE /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		201205C52A06064E001D89BE /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				201205AF2A060204001D89BE /* AppDelegate.swift */,
+				201205B12A060204001D89BE /* SceneDelegate.swift */,
+				201205C32A060637001D89BE /* Core */,
+				201205C62A060697001D89BE /* ParameterScreen */,
+				201205C72A0606C5001D89BE /* SimulatorScreen */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		201205C62A060697001D89BE /* ParameterScreen */ = {
+			isa = PBXGroup;
+			children = (
+				201205B32A060204001D89BE /* ViewController.swift */,
+			);
+			path = ParameterScreen;
+			sourceTree = "<group>";
+		};
+		201205C72A0606C5001D89BE /* SimulatorScreen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SimulatorScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,8 +180,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				201205C92A06079B001D89BE /* SimulatorManager.swift in Sources */,
 				201205B42A060204001D89BE /* ViewController.swift in Sources */,
 				201205B02A060204001D89BE /* AppDelegate.swift in Sources */,
+				201205CB2A06A354001D89BE /* HumanModel.swift in Sources */,
 				201205B22A060204001D89BE /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -277,7 +325,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A6K768N2V3;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = VirusSImulator/Info.plist;
+				INFOPLIST_FILE = VirusSImulator/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -305,7 +353,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A6K768N2V3;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = VirusSImulator/Info.plist;
+				INFOPLIST_FILE = VirusSImulator/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
