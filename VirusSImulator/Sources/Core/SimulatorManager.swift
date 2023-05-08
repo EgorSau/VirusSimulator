@@ -1,56 +1,66 @@
 //
 //  SimulatorManager.swift
-//  VirusSImulator
+//  VirusSimulator
 //
 //  Created by Egor SAUSHKIN on 06.05.2023.
 //
 
 import UIKit
 
-/// Протокол для передачи бизнес-модели приложения в UI
+/// Протокол для передачи бизнес-модели приложения в UI.
 protocol SimulatorProtocol {
-	/// Метод заражения человека вирусом
+	/// Метод заражения человека вирусом.
+	/// - Parameter cellID: Принимает параметр ячейки, выбранной в которой находится человек.
 	func makeHumanSick(by cellID: Int)
-	/// Создает группу людей в зависимости от заданных параметров groupSize
-	func createGroupOfHumans()
-	/// Метод для запуска симулятора распространения вируса
-	func virusInfectionStart(by cellID: Int)
-	/// Метод показывает количество больных людей
+	/// Показывает количество группы людей в зависимости от заданных параметров groupSize.
+	/// - Returns: Возвращает количество людей в группе , заданной пользователем.
+	func showGroupOfHumans() -> Int
+	/// Метод для запуска симулятора распространения вируса.
+	/// - Parameters:
+	///   - cellID: Входящий параметр с номером ячейки.
+	///   - closure: Замыкание по завершению расчета инфицированных.
+	func virusInfectionStart(by cellID: Int, _ closure: @escaping () -> ())
+	/// Метод показывает количество больных людей.
+	/// - Returns: Возвращает количество больных людей.
 	func showSickPeople() -> Int
-	/// Метод показывает количество здоровых людей
+	/// Метод показывает количество здоровых людей.
+	/// - Returns: Возвращает количество здоровых людей.
 	func showHealthyPeople() -> Int
+	/// Метод для выгрузки актуальной информации о заболевших и здоровых.
+	/// - Returns: Возвращает массив моделей людей с актуальным статусом о заболеваемости.
+	func sickStatus() -> [HumanModel]
 }
 
-/// Класс-менеджер для построения расчета для симулятора заражения людей
-final class SimulatorManager {
-	/// Количество людей в моделируемой группе
-	var groupSize: Int
-	/// Количество людей, которые будут заражены 1 человеком при контакте
-	var infectionFactor: Int
-	/// Период перерасчета количества зараженных людей
-	var recalculationPeriod: Int
-	/// Поле содержит актуальную информацию о больных и здоровых людях всей группы
+/// Класс-менеджер для построения расчета для симулятора заражения людей.
+final class SimulatorManager: SimulatorProtocol {
+	/// Количество людей в моделируемой группе.
+	private var groupSize: Int
+	/// Количество людей, которые будут заражены 1 человеком при контакте.
+	private var infectionFactor: Int
+	/// Период перерасчета количества зараженных людей.
+	private var recalculationPeriod: Int
+	/// Поле содержит актуальную информацию о больных и здоровых людях всей группы.
 	private var infectionStatistics = [HumanModel]()
 	
-	/// Создание класса-менеджера для построения расчета
+	/// Создание класса-менеджера для построения расчета.
 	/// - Parameters:
-	///   - groupSize: Количество людей в моделируемой группе
-	///   - infectionFactor: Количество людей, которые будут заражены 1 человеком при контакте
-	///   - recalculationPeriod: Период перерасчета количества зараженных людей
+	///   - groupSize: Количество людей в моделируемой группе.
+	///   - infectionFactor: Количество людей, которые будут заражены 1 человеком при контакте.
+	///   - recalculationPeriod: Период перерасчета количества зараженных людей.
 	init(groupSize: Int, infectionFactor: Int, recalculationPeriod: Int) {
 		self.groupSize = groupSize
 		self.infectionFactor = infectionFactor
 		self.recalculationPeriod = recalculationPeriod
+		createGroupOfHumans()
 	}
 	
-	/// Метод для запуска симулятора распространения вируса
+	/// Метод для запуска симулятора распространения вируса.
 	/// - Parameters:
-	///   - cellID: Принимает параметр ячейки, выбранной в которой находится человек
-	/// - Returns: Возвращает номера ячеек в которых люди заражены от выбранного человека
-	func virusInfectionStart(by cellID: Int) -> [Int] {
+	///   - cellID: Принимает параметр ячейки, выбранной в которой находится человек.
+	func virusInfectionStart(by cellID: Int, _ closure: @escaping () -> ()) {
 		var virusAffectedCells = [Int]()
-		DispatchQueue.main.async {
-			// Формируем зону подверженную вирусному заражению
+		DispatchQueue.main.asyncAfter(deadline: .now() + DispatchTimeInterval.seconds(recalculationPeriod)) { [weak self] in
+			// Формируем зону подверженную вирусному заражению.
 			let one = cellID - 1
 			let two = cellID - 5
 			let three = cellID - 6
@@ -59,56 +69,97 @@ final class SimulatorManager {
 			let six = cellID + 5
 			let seven = cellID + 6
 			let eight = cellID + 7
-			var fullVirusAffectedArea = [one, two, three, four, five, six, seven, eight]
+			let fullVirusAffectedArea = [one, two, three, four, five, six, seven, eight]
+			guard let groupSize = self?.groupSize else { return }
+			
 			// Делаем проверки:
-			fullVirusAffectedArea.enumerated().forEach { index, cell in
-				// Чтобы зона поражения не выходила за пределы экрана
-				if cell > self.groupSize || cell <= 0 {
-					fullVirusAffectedArea.remove(at: index)
-				}
-				// Проверяем заражены ли элементы "соседи"
-				if self.infectionStatistics[cell].isSick {
-					fullVirusAffectedArea.remove(at: index)
+			// Чтобы зона поражения не выходила за пределы экрана в минус.
+			let areaNoNegative = fullVirusAffectedArea.filter({$0 > 0})
+			
+			// Чтобы зона поражения не выходила за пределы экрана в плюс.
+			var areaNoMaxPositive = areaNoNegative.filter({$0 < groupSize})
+			
+			// Проверяем заражены ли элементы "соседи".
+			areaNoMaxPositive.enumerated().forEach { index, cell in
+				if self?.infectionStatistics[cell].isSick == true {
+					areaNoMaxPositive.removeAll(where: {$0 == cell})
 				}
 			}
-			// Вычисляем согласно условиям случайное количество зараженных в зависимости от infectionFactor
-			let maximumVirusAffectedNumberOfPeople = Int.random(in: 0...self.infectionFactor)
+			
+			// Вычисляем согласно условиям случайное количество зараженных в зависимости от infectionFactor.
+			guard let infectionFactor = self?.infectionFactor else { return }
+			let maximumVirusAffectedNumberOfPeople = Int.random(in: 1...infectionFactor)
 			if maximumVirusAffectedNumberOfPeople >= 8 {
-				// Максимальная зона поражения
-				virusAffectedCells = fullVirusAffectedArea
+				// Максимальная зона поражения.
+				for _ in 1...8 {
+					guard let randomCell = areaNoMaxPositive.randomElement() else { return }
+					if !virusAffectedCells.contains(randomCell) {
+						virusAffectedCells.append(randomCell)
+					}
+					self?.virusStatisticsUpdate(virusAffectedCells)
+				}
 			} else {
-				// Минимальная зона поражения
+				// Минимальная зона поражения.
 				for _ in 1...maximumVirusAffectedNumberOfPeople {
-					guard let randomCell = fullVirusAffectedArea.randomElement() else { return }
-					virusAffectedCells.append(randomCell)
+					guard let randomCell = areaNoMaxPositive.randomElement() else { return }
+					if !virusAffectedCells.contains(randomCell) {
+						virusAffectedCells.append(randomCell)
+					}
+					self?.virusStatisticsUpdate(virusAffectedCells)
 				}
 			}
-
+			closure()
 		}
-		return virusAffectedCells
 	}
 	
-	/// Создает группу людей в зависимости от заданных параметров groupSize
-	func createGroupOfHumans() -> [HumanModel] {
-		for _ in 1...groupSize {
-			infectionStatistics.append(HumanModel())
-		}
-		return infectionStatistics
+	// MARK: - Public methods
+	
+	/// Показывает количество группы людей в зависимости от заданных параметров groupSize.
+	/// - Returns: Возвращает количество людей в группе , заданной пользователем.
+	func showGroupOfHumans() -> Int {
+		infectionStatistics.count
 	}
 	
-	/// Метод показывает количество больных людей
+	/// Метод показывает количество больных людей.
+	/// - Returns: Возвращает количество больных людей.
 	func showSickPeople() -> Int {
 		infectionStatistics.filter({ $0.isSick }).count
 	}
 	
-	/// Метод показывает количество здоровых людей
+	/// Метод показывает количество здоровых людей.
+	/// - Returns: Возвращает количество здоровых людей.
 	func showHealthyPeople() -> Int {
 		infectionStatistics.filter({ $0.isSick == false }).count
 	}
 	
-	/// Метод заражения человека вирусом
-	/// - Parameter cellID: Принимает параметр ячейки, выбранной в которой находится человек
+	/// Метод заражения человека вирусом.
+	/// - Parameter cellID: Принимает параметр ячейки, выбранной в которой находится человек.
 	func makeHumanSick(by cellID: Int) {
 		infectionStatistics[cellID].isSick = true
+	}
+	
+	/// Метод для выгрузки актуальной информации о заболевших и здоровых.
+	/// - Returns: Возвращает массив моделей людей с актуальным статусом о заболеваемости.
+	func sickStatus() -> [HumanModel] {
+		infectionStatistics
+	}
+	
+	// MARK: - Internal methods
+	
+	/// Создает группу людей в зависимости от заданных параметров groupSize.
+	internal func createGroupOfHumans() {
+		for _ in 1...groupSize {
+			infectionStatistics.append(HumanModel())
+		}
+	}
+	
+	/// Метод для обновления статуса о заболевании всей группы людей.
+	/// - Parameter sickGroup: Параметр для ввода группы людей с обновленным статусом о заболевании.
+	internal func virusStatisticsUpdate(_ sickGroup: [Int]) {
+		var tempStatistics = infectionStatistics
+		sickGroup.forEach { id in
+			tempStatistics[id].isSick = true
+		}
+		infectionStatistics = tempStatistics
 	}
 }
