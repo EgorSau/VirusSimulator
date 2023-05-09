@@ -16,7 +16,6 @@ final class SimulatorCollectionViewCell: UICollectionViewCell {
 	lazy var humanView: UIView = {
 		var view = UIView()
 		view.backgroundColor = .systemGreen
-		view.layer.cornerRadius = 13
 		view.translatesAutoresizingMaskIntoConstraints = false
 		return view
 	}()

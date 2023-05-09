@@ -30,6 +30,10 @@ protocol SimulatorScreenPresenterProtocol {
 	func areaStatusUpdate(cellID: Int, collection: UICollectionView) -> SimulatorScreenModel
 	/// Метод для обновления экрана при перезапуске.
 	func clearView()
+	/// Изменяемый параметр расстояния между ячейками коллекции
+	var cellSpacing: CGFloat { get set }
+	/// Изменяемый параметр количества ячеек коллекции
+	var cellNumber: CGFloat { get set }
 }
 
 /// Класс для настройки презентации экрана с Симулатора вируса.
@@ -40,6 +44,10 @@ final class SimulatorScreenPresenter: SimulatorScreenPresenterProtocol {
 	private var viewController: SimulatorViewController
 	private var simulator: SimulatorProtocol
 	private var status = [Bool]()
+	/// Изменяемый параметр расстояния между ячейками коллекции
+	var cellSpacing: CGFloat = 7
+	/// Изменяемый параметр количества ячеек коллекции
+	var cellNumber: CGFloat = 6
 	
 	// MARK: - Init
 	
@@ -136,8 +144,8 @@ final class SimulatorScreenPresenter: SimulatorScreenPresenterProtocol {
 	///   - spacing: Принимает параметр вычисленных расстояние между ячейками коллекции.
 	/// - Returns: Возвращает размер ячейки (длину и ширину).
 	func itemSize(for width: CGFloat, with spacing: CGFloat) -> CGSize {
-		let neededWidth = width - 7 * spacing
-		let itemWidth = floor(neededWidth / 6)
+		let neededWidth = width - cellSpacing * spacing
+		let itemWidth = floor(neededWidth / cellNumber)
 		return CGSize(width: itemWidth, height: itemWidth)
 	}
 	
