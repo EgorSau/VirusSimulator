@@ -51,7 +51,7 @@ final class SimulatorCollectionViewCell: UICollectionViewCell {
 	/// Метод для анимации ячейки с симулятором здорового человека.
 	func shakeHealthy() {
 		let animation = CAKeyframeAnimation()
-		animation.keyPath = "position.x"
+		animation.keyPath = AnimationStrings.animationKeyPath
 		animation.values = [0, 10, -10, 10, -10, 0]
 		animation.keyTimes = [0, 0.2, 0.4, 0.6, 0.8, 1]
 		animation.speed = 7
@@ -59,14 +59,14 @@ final class SimulatorCollectionViewCell: UICollectionViewCell {
 		animation.repeatCount = 20
 
 		animation.isAdditive = true
-		humanView.layer.add(animation, forKey: "shakeHealthy")
+		humanView.layer.add(animation, forKey: AnimationStrings.shakeHealthyAnimationName)
 	}
 
 	/// Метод для анимации ячейки с симулятором больного человека.
 	func shakeSick() {
 		humanView.backgroundColor = .systemRed
 		let animation = CAKeyframeAnimation()
-		animation.keyPath = "position.x"
+		animation.keyPath = AnimationStrings.animationKeyPath
 		animation.values = [0, 25, -25, 25, -25, 0]
 		animation.keyTimes = [0, 0.2, 0.4, 0.6, 0.8, 1]
 		animation.speed = 20
@@ -74,7 +74,7 @@ final class SimulatorCollectionViewCell: UICollectionViewCell {
 		animation.repeatCount = 20
 
 		animation.isAdditive = true
-		humanView.layer.add(animation, forKey: "shakeSick")
+		humanView.layer.add(animation, forKey: AnimationStrings.shakeSickAnimationName)
 	}
 }
 

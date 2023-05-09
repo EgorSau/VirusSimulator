@@ -17,9 +17,9 @@ final class ParameterScreenViewController: UIViewController {
 	/// Роутер экрана с параметрами пользователя
 	var router: RouterProtocol?
 	private var dictionary: [String : Any] = [
-		"group": Int(),
-		"factor": Int(),
-		"period": Int()
+		NotificationStrings.group: Int(),
+		NotificationStrings.factor: Int(),
+		NotificationStrings.period: Int()
 	]
 	
 	private lazy var contentView: UIView = {
@@ -33,13 +33,13 @@ final class ParameterScreenViewController: UIViewController {
 		stack.translatesAutoresizingMaskIntoConstraints = false
 		stack.axis = .vertical
 		stack.distribution = .fillEqually
-		stack.spacing = 8
+		stack.spacing = Sizes.spacing
 		return stack
 	}()
 	
 	private lazy var logo: UIImageView = {
 		var logo = UIImageView()
-		logo.image = UIImage(named: "umbrella")
+		logo.image = UIImage(named: TitleStrings.parametersImage)
 		logo.translatesAutoresizingMaskIntoConstraints = false
 		return logo
 	}()
@@ -47,9 +47,9 @@ final class ParameterScreenViewController: UIViewController {
 	private lazy var button: UIButton = {
 		let button = UIButton()
 		button.translatesAutoresizingMaskIntoConstraints = false
-		button.layer.cornerRadius = 10
+		button.layer.cornerRadius = Sizes.cornerRadius
 		button.backgroundColor = .systemRed
-		button.setTitle("Запустить моделирование", for: .normal)
+		button.setTitle(TitleStrings.parametersButton, for: .normal)
 		button.setTitleColor(.white, for: .normal)
 		button.addTarget(.none, action: #selector(buttonPressed), for: .touchUpInside)
 		return button
@@ -67,13 +67,13 @@ final class ParameterScreenViewController: UIViewController {
 		let textField = UITextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.layer.borderColor = UIColor.lightGray.cgColor
-		textField.layer.cornerRadius = 10
-		textField.layer.borderWidth = 0.5
+		textField.layer.cornerRadius = Sizes.cornerRadius
+		textField.layer.borderWidth = Sizes.borderWidth
 		textField.textColor = .systemRed
-		textField.font = .systemFont(ofSize: 16, weight: .regular)
+		textField.font = .systemFont(ofSize: Sizes.fontSize, weight: .regular)
 		textField.tintColor = UIColor.systemRed
 		textField.autocapitalizationType = .none
-		textField.placeholder = " Введите размер группы людей"
+		textField.placeholder = TitleStrings.groupTextFieldPlaceholder
 		return textField
 	}()
 	
@@ -82,13 +82,13 @@ final class ParameterScreenViewController: UIViewController {
 		let textField = UITextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.layer.borderColor = UIColor.lightGray.cgColor
-		textField.layer.cornerRadius = 10
-		textField.layer.borderWidth = 0.5
+		textField.layer.cornerRadius = Sizes.cornerRadius
+		textField.layer.borderWidth = Sizes.borderWidth
 		textField.textColor = .systemRed
-		textField.font = .systemFont(ofSize: 16, weight: .regular)
+		textField.font = .systemFont(ofSize: Sizes.fontSize, weight: .regular)
 		textField.tintColor = UIColor.systemRed
 		textField.autocapitalizationType = .none
-		textField.placeholder = " Введите фактор заражения"
+		textField.placeholder = TitleStrings.infectionFactorTextFieldPlaceholder
 		return textField
 	}()
 	
@@ -97,13 +97,13 @@ final class ParameterScreenViewController: UIViewController {
 		let textField = UITextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.layer.borderColor = UIColor.lightGray.cgColor
-		textField.layer.cornerRadius = 10
-		textField.layer.borderWidth = 0.5
+		textField.layer.cornerRadius = Sizes.cornerRadius
+		textField.layer.borderWidth = Sizes.borderWidth
 		textField.textColor = .systemRed
-		textField.font = .systemFont(ofSize: 16, weight: .regular)
+		textField.font = .systemFont(ofSize: Sizes.fontSize, weight: .regular)
 		textField.tintColor = UIColor.systemRed
 		textField.autocapitalizationType = .none
-		textField.placeholder = " Введите скорость заражения (секунды)"
+		textField.placeholder = TitleStrings.recalculationPeriodTextFieldPlaceholder
 		return textField
 	}()
 		
@@ -129,8 +129,8 @@ final class ParameterScreenViewController: UIViewController {
 
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-		logo.bounds.size.width = 200.0
-		logo.bounds.size.height = 200.0
+		logo.bounds.size.width = Sizes.logoWidth
+		logo.bounds.size.height = Sizes.logoHeight
 	}
 	
 	// MARK: Layout setup private methods
@@ -171,8 +171,8 @@ final class ParameterScreenViewController: UIViewController {
 		NSLayoutConstraint.activate([
 			topConstraint,
 			logo.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-			logo.widthAnchor.constraint(equalToConstant: 200),
-			logo.heightAnchor.constraint(equalToConstant: 200),
+			logo.widthAnchor.constraint(equalToConstant: Sizes.logoWidth),
+			logo.heightAnchor.constraint(equalToConstant: Sizes.logoHeight),
 		])
 	}
 	
@@ -212,12 +212,12 @@ final class ParameterScreenViewController: UIViewController {
 		guard let group = Int(groupTextField.text!) else { return }
 		guard let factor = Int(infectionFactorTextField.text!) else { return }
 		guard let period = Int(recalculationPeriodTextField.text!) else { return }
-		dictionary["group"] = group
-		dictionary["factor"] = factor
-		dictionary["period"] = period
+		dictionary[NotificationStrings.group] = group
+		dictionary[NotificationStrings.factor] = factor
+		dictionary[NotificationStrings.period] = period
 
 		NotificationCenter.default.post(
-			name: Notification.Name(rawValue: "getData"),
+			name: Notification.Name(rawValue: NotificationStrings.parameterScreenNotificationName),
 			object: nil,
 			userInfo: dictionary
 		)

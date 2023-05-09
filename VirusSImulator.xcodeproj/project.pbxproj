@@ -21,6 +21,7 @@
 		201205D92A07B98A001D89BE /* SimulatorScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201205D82A07B98A001D89BE /* SimulatorScreenModel.swift */; };
 		201205DB2A07DC10001D89BE /* SimulatorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201205DA2A07DC10001D89BE /* SimulatorCollectionViewCell.swift */; };
 		201205DE2A097935001D89BE /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201205DD2A097935001D89BE /* Router.swift */; };
+		201205E02A0A8E93001D89BE /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201205DF2A0A8E93001D89BE /* Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		201205D82A07B98A001D89BE /* SimulatorScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorScreenModel.swift; sourceTree = "<group>"; };
 		201205DA2A07DC10001D89BE /* SimulatorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorCollectionViewCell.swift; sourceTree = "<group>"; };
 		201205DD2A097935001D89BE /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		201205DF2A0A8E93001D89BE /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				201205AF2A060204001D89BE /* AppDelegate.swift */,
 				201205B12A060204001D89BE /* SceneDelegate.swift */,
 				201205DD2A097935001D89BE /* Router.swift */,
+				201205E12A0A8E9A001D89BE /* Helpers */,
 				201205C32A060637001D89BE /* Core */,
 				201205C62A060697001D89BE /* ParameterScreen */,
 				201205C72A0606C5001D89BE /* SimulatorScreen */,
@@ -137,6 +140,14 @@
 				201205DA2A07DC10001D89BE /* SimulatorCollectionViewCell.swift */,
 			);
 			path = SimulatorCollectionView;
+			sourceTree = "<group>";
+		};
+		201205E12A0A8E9A001D89BE /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				201205DF2A0A8E93001D89BE /* Helpers.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,6 +230,7 @@
 				201205D72A07B790001D89BE /* SimulatorViewController.swift in Sources */,
 				201205B22A060204001D89BE /* SceneDelegate.swift in Sources */,
 				201205D12A079C49001D89BE /* ParameterScreenModel.swift in Sources */,
+				201205E02A0A8E93001D89BE /* Helpers.swift in Sources */,
 				201205D32A079C56001D89BE /* ParameterScreenPresenter.swift in Sources */,
 				201205D52A07B6C1001D89BE /* SimulatorScreenPresenter.swift in Sources */,
 			);

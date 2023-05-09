@@ -57,16 +57,16 @@ final class SimulatorScreenPresenter: SimulatorScreenPresenterProtocol {
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(getData),
-			name: Notification.Name(rawValue: "getData"),
+			name: Notification.Name(rawValue: NotificationStrings.parameterScreenNotificationName),
 			object: nil
 		)
 	}
 	
 	@objc private func getData(notification: Notification){
 		guard let userInfo = notification.userInfo else { return }
-		guard let group = userInfo["group"] as? Int else { return }
-		guard let factor = userInfo["factor"] as? Int else { return }
-		guard let period = userInfo["period"] as? Int else { return }
+		guard let group = userInfo[NotificationStrings.group] as? Int else { return }
+		guard let factor = userInfo[NotificationStrings.factor] as? Int else { return }
+		guard let period = userInfo[NotificationStrings.period] as? Int else { return }
 		simulator = SimulatorManager(
 			groupSize: group,
 			infectionFactor: factor,

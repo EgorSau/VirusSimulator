@@ -24,9 +24,14 @@ final class SimulatorViewController: UIViewController {
 	private lazy var layout: UICollectionViewFlowLayout = {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .vertical
-		layout.minimumInteritemSpacing = 8
-		layout.minimumLineSpacing = 8
-		layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+		layout.minimumInteritemSpacing = Sizes.spacing
+		layout.minimumLineSpacing = Sizes.spacing
+		layout.sectionInset = UIEdgeInsets(
+			top: Sizes.spacing,
+			left: Sizes.spacing,
+			bottom: Sizes.spacing,
+			right: Sizes.spacing
+		)
 		return layout
 	}()
 	
@@ -34,8 +39,8 @@ final class SimulatorViewController: UIViewController {
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		collectionView.dataSource = self
 		collectionView.delegate = self
-		collectionView.register(SimulatorCollectionViewCell.self, forCellWithReuseIdentifier: "SimulatorCell")
-		collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "DefaultCell")
+		collectionView.register(SimulatorCollectionViewCell.self, forCellWithReuseIdentifier: TitleStrings.simulatorCellName)
+		collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: TitleStrings.defaultCellName)
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
 		return collectionView
 	}()
@@ -46,12 +51,11 @@ final class SimulatorViewController: UIViewController {
 		super.viewWillAppear(animated)
 		viewSetup()
 		collectionView.reloadData()
-		navigationItem.title = "Больных: \(viewModel.sickNumber) / Здоровых: \(viewModel.healthyNumber)"
+		navigationItem.title = TitleStrings.navigationNameSick + "\(viewModel.sickNumber)" + TitleStrings.navigationNameHealthy + "\(viewModel.healthyNumber)"
 	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-//		viewSetup()
 		setupCollectionView()
 	}
 	
@@ -97,8 +101,8 @@ extension SimulatorViewController: UICollectionViewDataSource {
 	
 	/// Метод для настройки отображения ячеек внутри коллекции.
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SimulatorCell", for: indexPath) as? SimulatorCollectionViewCell else {
-			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DefaultCell", for: indexPath)
+		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleStrings.simulatorCellName, for: indexPath) as? SimulatorCollectionViewCell else {
+			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleStrings.defaultCellName, for: indexPath)
 			return cell
 		}
 		let cellData = viewModel.isSick[indexPath.row]
@@ -119,7 +123,7 @@ extension SimulatorViewController: UICollectionViewDataSource {
 		collectionView.reloadItems(at: [indexPath])
 		guard let areaModel = presenter?.areaStatusUpdate(cellID: indexPath.row, collection: collectionView) else { return }
 		viewModel = areaModel
-		navigationItem.title = "Больных: \(viewModel.sickNumber) / Здоровых: \(viewModel.healthyNumber)"
+		navigationItem.title = TitleStrings.navigationNameSick + "\(viewModel.sickNumber)" + TitleStrings.navigationNameHealthy + "\(viewModel.healthyNumber)"
 	}
 	
 	/// Метод для расчета размера количества ячеек и размера ячейки коллекции.
