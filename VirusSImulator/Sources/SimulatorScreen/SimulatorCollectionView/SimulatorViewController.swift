@@ -43,6 +43,7 @@ final class SimulatorViewController: UIViewController {
 		collectionView.register(SimulatorCollectionViewCell.self, forCellWithReuseIdentifier: TitleStrings.simulatorCellName)
 		collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: TitleStrings.defaultCellName)
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
+		collectionView.allowsMultipleSelection = true
 		return collectionView
 	}()
 	
@@ -137,6 +138,11 @@ extension SimulatorViewController: UICollectionViewDataSource {
 			with: spacing ?? 0
 		) else { return CGSize() }
 		return itemSize
+	}
+	
+	/// Метод для активации свайпа нескольких ячеек.
+	func collectionView(_ collectionView: UICollectionView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
+		return true
 	}
 }
 
