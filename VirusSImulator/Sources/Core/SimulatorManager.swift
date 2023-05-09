@@ -19,6 +19,7 @@ protocol SimulatorProtocol {
 	/// - Parameters:
 	///   - cellID: Входящий параметр с номером ячейки.
 	///   - closure: Замыкание по завершению расчета инфицированных.
+	///   ///   - closure: Добавляет  действие по завершению расчета.
 	func virusInfectionStart(by cellID: Int, _ closure: @escaping () -> ())
 	/// Метод показывает количество больных людей.
 	/// - Returns: Возвращает количество больных людей.
@@ -60,6 +61,7 @@ final class SimulatorManager: SimulatorProtocol {
 	/// Метод для запуска симулятора распространения вируса.
 	/// - Parameters:
 	///   - cellID: Принимает параметр ячейки, выбранной в которой находится человек.
+	///   - closure: Добавляет  действие по завершению расчета.
 	func virusInfectionStart(by cellID: Int, _ closure: @escaping () -> ()) {
 		var virusAffectedCells = [Int]()
 		DispatchQueue.main.asyncAfter(deadline: .now() + DispatchTimeInterval.seconds(recalculationPeriod)) { [weak self] in

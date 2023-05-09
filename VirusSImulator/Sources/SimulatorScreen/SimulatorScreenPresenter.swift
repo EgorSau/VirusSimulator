@@ -30,9 +30,9 @@ protocol SimulatorScreenPresenterProtocol {
 	func areaStatusUpdate(cellID: Int, collection: UICollectionView) -> SimulatorScreenModel
 	/// Метод для обновления экрана при перезапуске.
 	func clearView()
-	/// Изменяемый параметр расстояния между ячейками коллекции
+	/// Изменяемый параметр расстояния между ячейками коллекции.
 	var cellSpacing: CGFloat { get set }
-	/// Изменяемый параметр количества ячеек коллекции
+	/// Изменяемый параметр количества ячеек коллекции.
 	var cellNumber: CGFloat { get set }
 }
 
@@ -44,9 +44,9 @@ final class SimulatorScreenPresenter: SimulatorScreenPresenterProtocol {
 	private var viewController: SimulatorViewController
 	private var simulator: SimulatorProtocol
 	private var status = [Bool]()
-	/// Изменяемый параметр расстояния между ячейками коллекции
+	/// Изменяемый параметр расстояния между ячейками коллекции.
 	var cellSpacing: CGFloat = 7
-	/// Изменяемый параметр количества ячеек коллекции
+	/// Изменяемый параметр количества ячеек коллекции.
 	var cellNumber: CGFloat = 6
 	
 	// MARK: - Init
@@ -54,7 +54,6 @@ final class SimulatorScreenPresenter: SimulatorScreenPresenterProtocol {
 	/// Инициализатор для класса презентации симулятора вируса.
 	/// - Parameters:
 	///   - viewController: Параметр ВьюКонтроллера класса SimulatorViewController.
-	///   - simulator: Параметр принимающий симулятор протокола SimulatorProtocol.
 	init(viewController: SimulatorViewController) {
 		self.viewController = viewController
 		simulator = SimulatorManager(

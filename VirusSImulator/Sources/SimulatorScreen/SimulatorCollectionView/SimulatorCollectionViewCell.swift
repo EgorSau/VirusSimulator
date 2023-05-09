@@ -56,11 +56,11 @@ final class SimulatorCollectionViewCell: UICollectionViewCell {
 		animation.speed = 7
 		animation.duration = 60
 		animation.repeatCount = 20
-
+		
 		animation.isAdditive = true
 		humanView.layer.add(animation, forKey: AnimationStrings.shakeHealthyAnimationName)
 	}
-
+	
 	/// Метод для анимации ячейки с симулятором больного человека.
 	func shakeSick() {
 		humanView.backgroundColor = .systemRed
@@ -71,7 +71,7 @@ final class SimulatorCollectionViewCell: UICollectionViewCell {
 		animation.speed = 20
 		animation.duration = 60
 		animation.repeatCount = 20
-
+		
 		animation.isAdditive = true
 		humanView.layer.add(animation, forKey: AnimationStrings.shakeSickAnimationName)
 	}

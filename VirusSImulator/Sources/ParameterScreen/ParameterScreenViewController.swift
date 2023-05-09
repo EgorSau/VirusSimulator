@@ -12,9 +12,9 @@ final class ParameterScreenViewController: UIViewController {
 	
 	// MARK: - Parameters
 	
-	/// Презентер экрана с параметрами пользователя
+	/// Презентер экрана с параметрами пользователя.
 	var presenter: ParameterScreenPresenterProtocol?
-	/// Роутер экрана с параметрами пользователя
+	/// Роутер экрана с параметрами пользователя.
 	var router: RouterProtocol?
 	private var dictionary: [String : Any] = [
 		NotificationStrings.group: Int(),
@@ -106,7 +106,7 @@ final class ParameterScreenViewController: UIViewController {
 		textField.placeholder = TitleStrings.recalculationPeriodTextFieldPlaceholder
 		return textField
 	}()
-		
+	
 	// MARK: - Deinit
 	
 	deinit {
@@ -126,7 +126,7 @@ final class ParameterScreenViewController: UIViewController {
 		presenter?.KbdNotificatorAppearance()
 		presenter?.setupKbdRemoveByTapGesture()
 	}
-
+	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		logo.bounds.size.width = Sizes.logoWidth
@@ -204,7 +204,7 @@ final class ParameterScreenViewController: UIViewController {
 	
 	@objc private func buttonPressed(){
 		guard groupTextField.text != "" || infectionFactorTextField.text != "" || recalculationPeriodTextField.text != "" else { return }
-
+		
 		groupTextField.resignFirstResponder()
 		infectionFactorTextField.resignFirstResponder()
 		recalculationPeriodTextField.resignFirstResponder()
@@ -215,7 +215,7 @@ final class ParameterScreenViewController: UIViewController {
 		dictionary[NotificationStrings.group] = group
 		dictionary[NotificationStrings.factor] = factor
 		dictionary[NotificationStrings.period] = period
-
+		
 		NotificationCenter.default.post(
 			name: Notification.Name(rawValue: NotificationStrings.parameterScreenNotificationName),
 			object: nil,

@@ -14,6 +14,7 @@ final class SimulatorViewController: UIViewController {
 	
 	/// Презентер для экрана симулятора вируса.
 	var presenter: SimulatorScreenPresenterProtocol?
+	/// Изменяемый параметр для скругления углов вью ячейки коллекции.
 	var cornerRadiusMultiplier: CGFloat = 4
 	private var viewModel = SimulatorScreenModel(
 		groupNumber: Int(),
