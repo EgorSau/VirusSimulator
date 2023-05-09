@@ -1,6 +1,6 @@
 //
 //  SimulatorScreenModel.swift
-//  VirusSImulator
+//  VirusSimulator
 //
 //  Created by Egor SAUSHKIN on 07.05.2023.
 //

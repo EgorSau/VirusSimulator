@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  VirusSImulator
+//  VirusSimulator
 //
 //  Created by Egor SAUSHKIN on 06.05.2023.
 //
@@ -14,23 +14,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 		guard let scene = (scene as? UIWindowScene) else { return }
 		window = UIWindow(windowScene: scene)
-		window?.rootViewController = UINavigationController(rootViewController: ParameterScreenViewController())
+		window?.rootViewController = UINavigationController(rootViewController: assembly())
 		window?.makeKeyAndVisible()
 	}
 	
-	func sceneDidDisconnect(_ scene: UIScene) {
-	}
-	
-	func sceneDidBecomeActive(_ scene: UIScene) {
-	}
-	
-	func sceneWillResignActive(_ scene: UIScene) {
-	}
-	
-	func sceneWillEnterForeground(_ scene: UIScene) {
-	}
-	
-	func sceneDidEnterBackground(_ scene: UIScene) {
+	private func assembly() -> UIViewController {
+		let parameterViewController = ParameterScreenViewController()
+		let simulatorViewController = SimulatorViewController()
+		let router = Router(
+			parameterViewController: parameterViewController,
+			simulatorViewController: simulatorViewController
+		)
+		parameterViewController.router = router
+
+		parameterViewController.presenter = ParameterScreenPresenter(viewController: parameterViewController)
+		simulatorViewController.presenter = SimulatorScreenPresenter(viewController: simulatorViewController)
+		
+		return parameterViewController
 	}
 }
 

@@ -1,6 +1,6 @@
 //
 //  ParameterScreenViewController.swift
-//  VirusSImulator
+//  VirusSimulator
 //
 //  Created by Egor SAUSHKIN on 06.05.2023.
 //
@@ -12,7 +12,15 @@ final class ParameterScreenViewController: UIViewController {
 	
 	// MARK: - Parameters
 	
-	private var presenter: ParameterScreenPresenterProtocol?
+	/// Презентер экрана с параметрами пользователя
+	var presenter: ParameterScreenPresenterProtocol?
+	/// Роутер экрана с параметрами пользователя
+	var router: RouterProtocol?
+	private var dictionary: [String : Any] = [
+		"group": Int(),
+		"factor": Int(),
+		"period": Int()
+	]
 	
 	private lazy var contentView: UIView = {
 		var contentView = UIView()
@@ -115,7 +123,6 @@ final class ParameterScreenViewController: UIViewController {
 		setupLogo()
 		setupStack()
 		setupButton()
-		presenter = ParameterScreenPresenter(viewController: self)
 		presenter?.KbdNotificatorAppearance()
 		presenter?.setupKbdRemoveByTapGesture()
 	}
@@ -196,25 +203,25 @@ final class ParameterScreenViewController: UIViewController {
 	}
 	
 	@objc private func buttonPressed(){
-		guard groupTextField.text != "" || infectionFactorTextField.text! != "" || recalculationPeriodTextField.text! != "" else { return }
-		guard let group = Int(groupTextField.text!) else { return }
-		guard let factor = Int(infectionFactorTextField.text!) else { return }
-		guard let period = Int(recalculationPeriodTextField.text!) else { return }
-		
+		guard groupTextField.text != "" || infectionFactorTextField.text != "" || recalculationPeriodTextField.text != "" else { return }
+
 		groupTextField.resignFirstResponder()
 		infectionFactorTextField.resignFirstResponder()
 		recalculationPeriodTextField.resignFirstResponder()
 		
-		let simulatorViewController = SimulatorViewController()
-		simulatorViewController.simulatorManager = SimulatorManager(
-			groupSize: group,
-			infectionFactor: factor,
-			recalculationPeriod: period
+		guard let group = Int(groupTextField.text!) else { return }
+		guard let factor = Int(infectionFactorTextField.text!) else { return }
+		guard let period = Int(recalculationPeriodTextField.text!) else { return }
+		dictionary["group"] = group
+		dictionary["factor"] = factor
+		dictionary["period"] = period
+
+		NotificationCenter.default.post(
+			name: Notification.Name(rawValue: "getData"),
+			object: nil,
+			userInfo: dictionary
 		)
 		
-		navigationController?.pushViewController(
-			simulatorViewController,
-			animated: true
-		)
+		router?.routeToSimulator()	
 	}
 }

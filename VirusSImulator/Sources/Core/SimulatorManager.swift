@@ -29,6 +29,10 @@ protocol SimulatorProtocol {
 	/// Метод для выгрузки актуальной информации о заболевших и здоровых.
 	/// - Returns: Возвращает массив моделей людей с актуальным статусом о заболеваемости.
 	func sickStatus() -> [HumanModel]
+	/// Создает группу людей в зависимости от заданных параметров groupSize.
+	func createGroupOfHumans()
+	/// Удаляет группу людей.
+	func deleteGroupOfHumans()
 }
 
 /// Класс-менеджер для построения расчета для симулятора заражения людей.
@@ -51,7 +55,6 @@ final class SimulatorManager: SimulatorProtocol {
 		self.groupSize = groupSize
 		self.infectionFactor = infectionFactor
 		self.recalculationPeriod = recalculationPeriod
-		createGroupOfHumans()
 	}
 	
 	/// Метод для запуска симулятора распространения вируса.
@@ -144,14 +147,21 @@ final class SimulatorManager: SimulatorProtocol {
 		infectionStatistics
 	}
 	
-	// MARK: - Internal methods
+	/// Удаляет группу людей.
+	func deleteGroupOfHumans() {
+		if !infectionStatistics.isEmpty {
+			infectionStatistics.removeAll()
+		}
+	}
 	
 	/// Создает группу людей в зависимости от заданных параметров groupSize.
-	internal func createGroupOfHumans() {
+	func createGroupOfHumans() {
 		for _ in 1...groupSize {
 			infectionStatistics.append(HumanModel())
 		}
 	}
+	
+	// MARK: - Internal methods
 	
 	/// Метод для обновления статуса о заболевании всей группы людей.
 	/// - Parameter sickGroup: Параметр для ввода группы людей с обновленным статусом о заболевании.

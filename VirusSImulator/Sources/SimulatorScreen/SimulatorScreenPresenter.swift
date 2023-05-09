@@ -1,6 +1,6 @@
 //
 //  SimulatorScreenPresenter.swift
-//  VirusSImulator
+//  VirusSimulator
 //
 //  Created by Egor SAUSHKIN on 07.05.2023.
 //
@@ -28,6 +28,8 @@ protocol SimulatorScreenPresenterProtocol {
 	///   - collection: Принимает коллекцию в которой было нажатие.
 	/// - Returns: Возвращает модель для отображения экрана SimulatorScreenModel.
 	func areaStatusUpdate(cellID: Int, collection: UICollectionView) -> SimulatorScreenModel
+	/// Метод для обновления экрана при перезапуске.
+	func clearView()
 }
 
 /// Класс для настройки презентации экрана с Симулатора вируса.
@@ -45,16 +47,44 @@ final class SimulatorScreenPresenter: SimulatorScreenPresenterProtocol {
 	/// - Parameters:
 	///   - viewController: Параметр ВьюКонтроллера класса SimulatorViewController.
 	///   - simulator: Параметр принимающий симулятор протокола SimulatorProtocol.
-	init(viewController: SimulatorViewController, simulator: SimulatorProtocol) {
+	init(viewController: SimulatorViewController) {
 		self.viewController = viewController
-		self.simulator = simulator
+		simulator = SimulatorManager(
+			groupSize: 1,
+			infectionFactor: 1,
+			recalculationPeriod: 1
+		)
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(getData),
+			name: Notification.Name(rawValue: "getData"),
+			object: nil
+		)
+	}
+	
+	@objc private func getData(notification: Notification){
+		guard let userInfo = notification.userInfo else { return }
+		guard let group = userInfo["group"] as? Int else { return }
+		guard let factor = userInfo["factor"] as? Int else { return }
+		guard let period = userInfo["period"] as? Int else { return }
+		simulator = SimulatorManager(
+			groupSize: group,
+			infectionFactor: factor,
+			recalculationPeriod: period
+		)
 	}
 	
 	// MARK: - Public methods
 	
+	/// Метод для обновления экрана при перезапуске.
+	func clearView() {
+		simulator.deleteGroupOfHumans()
+	}
+	
 	/// Метод для отображения экрана и передачи модели во ВьюКонтроллер симулятора.
 	/// - Returns: Возвращает модель для отображения экрана SimulatorScreenModel.
 	func present() -> SimulatorScreenModel {
+		simulator.createGroupOfHumans()
 		statusUpdate()
 		return SimulatorScreenModel(
 			groupNumber: simulator.showGroupOfHumans(),
@@ -91,7 +121,6 @@ final class SimulatorScreenPresenter: SimulatorScreenPresenterProtocol {
 					collection.reloadItems(at: [IndexPath(row: index, section: 0)])
 				}
 			}
-
 		}
 		return SimulatorScreenModel(
 			groupNumber: simulator.showGroupOfHumans(),
@@ -115,9 +144,8 @@ final class SimulatorScreenPresenter: SimulatorScreenPresenterProtocol {
 	// MARK: - Private methods
 	
 	private func statusUpdate() {
-		let model = simulator.sickStatus()
 		var tempStatus = [Bool]()
-		model.forEach { sickStatus in
+		simulator.sickStatus().forEach { sickStatus in
 			tempStatus.append(sickStatus.isSick)
 		}
 		status = tempStatus

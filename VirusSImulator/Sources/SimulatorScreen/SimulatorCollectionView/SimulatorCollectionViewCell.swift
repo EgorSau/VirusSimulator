@@ -1,6 +1,6 @@
 //
 //  SimulatorCollectionViewCell.swift
-//  VirusSImulator
+//  VirusSimulator
 //
 //  Created by Egor SAUSHKIN on 07.05.2023.
 //
@@ -8,7 +8,7 @@
 import UIKit
 
 /// Класс для отображения Вью ячейки симулятора вируса.
-class SimulatorCollectionViewCell: UICollectionViewCell {
+final class SimulatorCollectionViewCell: UICollectionViewCell {
 	
 	// MARK: - Parameters
 	

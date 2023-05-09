@@ -1,6 +1,6 @@
 //
 //  HumanModel.swift
-//  VirusSImulator
+//  VirusSimulator
 //
 //  Created by Egor SAUSHKIN on 06.05.2023.
 //

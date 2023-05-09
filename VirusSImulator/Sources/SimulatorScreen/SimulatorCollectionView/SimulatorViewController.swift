@@ -12,9 +12,8 @@ final class SimulatorViewController: UIViewController {
 	
 	// MARK: - Parameters
 	
-	#warning("ARCHI-CHECK")
-	var simulatorManager: SimulatorProtocol?
-	private var presenter: SimulatorScreenPresenterProtocol?
+	/// Презентер для экрана симулятора вируса.
+	var presenter: SimulatorScreenPresenterProtocol?
 	private var viewModel = SimulatorScreenModel(
 		groupNumber: Int(),
 		healthyNumber: Int(),
@@ -43,24 +42,39 @@ final class SimulatorViewController: UIViewController {
 	
 	// MARK: - Override methods
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		viewSetup()
+		collectionView.reloadData()
+		navigationItem.title = "Больных: \(viewModel.sickNumber) / Здоровых: \(viewModel.healthyNumber)"
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		viewSetup()
+//		viewSetup()
 		setupCollectionView()
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		presenter?.clearView()
+		viewModel = SimulatorScreenModel(
+			groupNumber: Int(),
+			healthyNumber: Int(),
+			sickNumber: Int(),
+			isSick: [Bool]()
+		)
 	}
 	
 	// MARK: Layout setup private methods
 	
 	private func viewSetup() {
 		view.backgroundColor = .white
-		guard let simulator = simulatorManager else { return }
-		presenter = SimulatorScreenPresenter(viewController: self, simulator: simulator)
 		guard let model = presenter?.present() else { return }
 		viewModel = model
 	}
 	
 	private func setupCollectionView(){
-		navigationItem.title = "Больных: \(viewModel.sickNumber) / Здоровых: \(viewModel.healthyNumber)"
 		view.addSubview(collectionView)
 		
 		NSLayoutConstraint.activate([
