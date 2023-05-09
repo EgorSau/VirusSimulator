@@ -14,6 +14,7 @@ final class SimulatorViewController: UIViewController {
 	
 	/// Презентер для экрана симулятора вируса.
 	var presenter: SimulatorScreenPresenterProtocol?
+	var cornerRadiusMultiplier: CGFloat = 4
 	private var viewModel = SimulatorScreenModel(
 		groupNumber: Int(),
 		healthyNumber: Int(),
@@ -57,6 +58,7 @@ final class SimulatorViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupCollectionView()
+		addGesture()
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -106,6 +108,7 @@ extension SimulatorViewController: UICollectionViewDataSource {
 			return cell
 		}
 		let cellData = viewModel.isSick[indexPath.row]
+		cell.humanView.layer.cornerRadius = cell.frame.height/cornerRadiusMultiplier
 		switch cellData {
 		case true:
 			cell.shakeSick()
@@ -140,3 +143,49 @@ extension SimulatorViewController: UICollectionViewDataSource {
 // MARK: - SimulatorViewController Extention - UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
 
 extension SimulatorViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {}
+
+// MARK: - Zoom gestures setup
+
+extension SimulatorViewController {
+	private func addGesture() {
+		let pinchGesture = UIPinchGestureRecognizer(
+			target: self,
+			action: #selector(didPinch)
+		)
+		collectionView.addGestureRecognizer(pinchGesture)
+	}
+	
+	@objc private func didPinch(_ gesture: UIPinchGestureRecognizer) {
+		if gesture.state == .changed {
+			let scale = gesture.scale
+			switch scale {
+			case 1...2:
+				presenter?.cellNumber = 6
+				presenter?.cellSpacing = 7
+				cornerRadiusMultiplier = 4
+				view.layoutSubviews()
+				collectionView.reloadData()
+			case 2...3:
+				presenter?.cellNumber = 5
+				presenter?.cellSpacing = 6
+				cornerRadiusMultiplier = 3.5
+				view.layoutSubviews()
+				collectionView.reloadData()
+			case 3...4:
+				presenter?.cellNumber = 4
+				presenter?.cellSpacing = 5
+				cornerRadiusMultiplier = 3
+				view.layoutSubviews()
+				collectionView.reloadData()
+			case 4...5:
+				presenter?.cellNumber = 3
+				presenter?.cellSpacing = 4
+				cornerRadiusMultiplier = 2.8
+				view.layoutSubviews()
+				collectionView.reloadData()
+			default:
+				break
+			}
+		}
+	}
+}
