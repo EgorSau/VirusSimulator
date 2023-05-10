@@ -12,26 +12,32 @@ protocol SimulatorProtocol {
 	/// Метод заражения человека вирусом.
 	/// - Parameter cellID: Принимает параметр ячейки, выбранной в которой находится человек.
 	func makeHumanSick(by cellID: Int)
+	
 	/// Показывает количество группы людей в зависимости от заданных параметров groupSize.
 	/// - Returns: Возвращает количество людей в группе , заданной пользователем.
 	func showGroupOfHumans() -> Int
+	
 	/// Метод для запуска симулятора распространения вируса.
 	/// - Parameters:
 	///   - cellID: Входящий параметр с номером ячейки.
 	///   - closure: Замыкание по завершению расчета инфицированных.
-	///   ///   - closure: Добавляет  действие по завершению расчета.
 	func virusInfectionStart(by cellID: Int, _ closure: @escaping () -> ())
+	
 	/// Метод показывает количество больных людей.
 	/// - Returns: Возвращает количество больных людей.
 	func showSickPeople() -> Int
+	
 	/// Метод показывает количество здоровых людей.
 	/// - Returns: Возвращает количество здоровых людей.
 	func showHealthyPeople() -> Int
+	
 	/// Метод для выгрузки актуальной информации о заболевших и здоровых.
 	/// - Returns: Возвращает массив моделей людей с актуальным статусом о заболеваемости.
 	func sickStatus() -> [HumanModel]
+	
 	/// Создает группу людей в зависимости от заданных параметров groupSize.
 	func createGroupOfHumans()
+	
 	/// Удаляет группу людей.
 	func deleteGroupOfHumans()
 }
@@ -61,10 +67,10 @@ final class SimulatorManager: SimulatorProtocol {
 	/// Метод для запуска симулятора распространения вируса.
 	/// - Parameters:
 	///   - cellID: Принимает параметр ячейки, выбранной в которой находится человек.
-	///   - closure: Добавляет  действие по завершению расчета.
+	///   - closure: Замыкание по завершению расчета инфицированных.
 	func virusInfectionStart(by cellID: Int, _ closure: @escaping () -> ()) {
 		var virusAffectedCells = [Int]()
-		DispatchQueue.main.asyncAfter(deadline: .now() + DispatchTimeInterval.seconds(recalculationPeriod)) { [weak self] in
+		DispatchQueue.global().asyncAfter(deadline: .now() + DispatchTimeInterval.seconds(recalculationPeriod)) { [weak self] in
 			// Формируем зону подверженную вирусному заражению.
 			let one = cellID - 1
 			let two = cellID - 5

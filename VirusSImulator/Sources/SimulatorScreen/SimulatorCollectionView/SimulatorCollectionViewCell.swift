@@ -76,4 +76,3 @@ final class SimulatorCollectionViewCell: UICollectionViewCell {
 		humanView.layer.add(animation, forKey: AnimationStrings.shakeSickAnimationName)
 	}
 }
-

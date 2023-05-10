@@ -109,8 +109,10 @@ extension SimulatorViewController: UICollectionViewDataSource {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleStrings.defaultCellName, for: indexPath)
 			return cell
 		}
+		navigationItem.title = TitleStrings.navigationNameSick + "\(viewModel.sickNumber)" + TitleStrings.navigationNameHealthy + "\(viewModel.healthyNumber)"
 		let cellData = viewModel.isSick[indexPath.row]
 		cell.humanView.layer.cornerRadius = cell.frame.height/cornerRadiusMultiplier
+		
 		switch cellData {
 		case true:
 			cell.shakeSick()
@@ -123,12 +125,19 @@ extension SimulatorViewController: UICollectionViewDataSource {
 	
 	/// Метод для настройки отображения по нажатию на ячейку.
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		guard let selectedModel = presenter?.sickStatusUpdate(cellID: indexPath.row) else { return }
-		viewModel = selectedModel
+		presenter?.sickStatusUpdate(
+			cellID: indexPath.row, { model in
+				self.viewModel = model
+			}
+		)
 		collectionView.reloadItems(at: [indexPath])
-		guard let areaModel = presenter?.areaStatusUpdate(cellID: indexPath.row, collection: collectionView) else { return }
-		viewModel = areaModel
-		navigationItem.title = TitleStrings.navigationNameSick + "\(viewModel.sickNumber)" + TitleStrings.navigationNameHealthy + "\(viewModel.healthyNumber)"
+		
+		presenter?.areaStatusUpdate(
+			cellID: indexPath.row,
+			collection: collectionView, { model in
+				self.viewModel = model
+			}
+		)
 	}
 	
 	/// Метод для расчета размера количества ячеек и размера ячейки коллекции.
