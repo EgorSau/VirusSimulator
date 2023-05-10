@@ -1,6 +1,6 @@
 //
 //  Helpers.swift
-//  VirusSImulator
+//  VirusSimulator
 //
 //  Created by Egor SAUSHKIN on 09.05.2023.
 //
@@ -33,10 +33,11 @@ enum AnimationStrings {
 }
 
 enum Sizes {
+	//Общие.
 	static let spacing: CGFloat = 8
 	static let logoWidth: CGFloat = 200
 	static let logoHeight: CGFloat = 200
-	// TextField
+	// TextField.
 	static let cornerRadius: CGFloat = 10
 	static let borderWidth: CGFloat = 0.5
 	static let fontSize: CGFloat = 16

@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			simulatorViewController: simulatorViewController
 		)
 		parameterViewController.router = router
-
+		
 		parameterViewController.presenter = ParameterScreenPresenter(viewController: parameterViewController)
 		simulatorViewController.presenter = SimulatorScreenPresenter(viewController: simulatorViewController)
 		
